@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soshin &mdash; Software Development &amp; Legacy Modernization</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy: #080b53;
+      --navy-light: #0e1268;
+      --navy-lighter: #151a7d;
+      --pink: #ea2088;
+      --pink-light: #ee4fa1;
+      --pink-deep: #c4136e;
+      --pink-glow: rgba(234, 32, 136, 0.15);
+      --pink-glow-strong: rgba(234, 32, 136, 0.25);
+      --white: #ffffff;
+      --gray-light: #e6e6e6;
+      --gray-mid: #b0b0c0;
+      --gray-dim: #7878a0;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.12);
+      --font: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==================== NAVIGATION ==================== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(8, 11, 83, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.4s, padding 0.4s;
+    }
+
+    nav.scrolled { border-bottom-color: var(--border); padding: 0.75rem 3rem; }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--white);
+    }
+
+    .nav-logo svg { height: 36px; width: auto; }
+
+    .nav-logo span {
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.03em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.25rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--gray-mid);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--pink);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-cta {
+      background: var(--pink) !important;
+      color: var(--white) !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      transition: transform 0.2s, box-shadow 0.3s !important;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(234, 32, 136, 0.4);
+    }
+
+    .nav-cta::after { display: none !important; }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .mobile-menu-btn span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--white);
+      margin: 5px 0;
+      transition: 0.3s;
+    }
+
+    /* ==================== HERO ==================== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 8rem 3rem 4rem;
+      overflow: hidden;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(234, 32, 136, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(234, 32, 136, 0.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 20%, transparent 70%);
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -250px; right: -150px;
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(234, 32, 136, 0.12) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .hero-glow-2 {
+      position: absolute;
+      bottom: -200px; left: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(14, 18, 104, 0.6) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: var(--pink-glow);
+      border: 1px solid rgba(234, 32, 136, 0.25);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--pink-light);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .hero-badge .pulse {
+      width: 6px; height: 6px;
+      background: var(--pink);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.4s;
+    }
+
+    .hero h1 .accent {
+      background: linear-gradient(135deg, var(--pink), var(--pink-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-description {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--gray-mid);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.6s;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.8s;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 2rem;
+      background: var(--pink);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+      text-decoration: none;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(234, 32, 136, 0.4);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 2rem;
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      font-family: var(--font);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s;
+      text-decoration: none;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--pink);
+      background: rgba(234, 32, 136, 0.05);
+    }
+
+    /* Hero Visual */
+    .hero-visual {
+      position: relative;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 0.6s;
+    }
+
+    .code-window {
+      background: rgba(14, 18, 104, 0.6);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 60px rgba(234, 32, 136, 0.08);
+      transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+      transition: transform 0.5s ease;
+    }
+
+    .code-window:hover { transform: perspective(1000px) rotateY(0deg) rotateX(0deg); }
+
+    .code-window-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.85rem 1.2rem;
+      background: rgba(8, 11, 83, 0.8);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .code-dot.red { background: #ef4444; }
+    .code-dot.yellow { background: #eab308; }
+    .code-dot.green { background: #22c55e; }
+
+    .code-window-title {
+      margin-left: 0.75rem;
+      font-size: 0.75rem;
+      color: var(--gray-dim);
+    }
+
+    .code-body {
+      padding: 1.5rem;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.8rem;
+      line-height: 1.8;
+      color: var(--gray-mid);
+    }
+
+    .code-body .keyword { color: #c084fc; }
+    .code-body .function { color: #60a5fa; }
+    .code-body .string { color: #34d399; }
+    .code-body .comment { color: var(--gray-dim); }
+    .code-body .accent { color: var(--pink); }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 1s;
+    }
+
+    .hero-stat {
+      text-align: center;
+      padding: 1.1rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.3s;
+    }
+
+    .hero-stat:hover { border-color: rgba(234, 32, 136, 0.3); }
+
+    .hero-stat .number {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--pink), var(--pink-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-stat .label {
+      font-size: 0.72rem;
+      color: var(--gray-dim);
+      margin-top: 0.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 500;
+    }
+
+    /* ==================== SECTIONS ==================== */
+    section { padding: 7rem 3rem; position: relative; }
+    .section-inner { max-width: 1400px; margin: 0 auto; }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--pink);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 1rem;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 20px; height: 2px;
+      background: var(--pink);
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    .divider-line {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+    }
+
+    /* ==================== SERVICES ==================== */
+    .services { background: var(--navy-light); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .service-card {
+      padding: 2.5rem 2rem;
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition: transform 0.4s, border-color 0.4s, box-shadow 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--pink), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(234, 32, 136, 0.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(234, 32, 136, 0.06);
+    }
+
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      width: 50px; height: 50px;
+      background: var(--pink-glow);
+      border: 1px solid rgba(234, 32, 136, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.3rem;
+    }
+
+    .service-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.75rem;
+    }
+
+    .service-card p {
+      font-size: 0.9rem;
+      color: var(--gray-mid);
+      line-height: 1.65;
+    }
+
+    .service-card .learn-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 1.25rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--pink);
+      text-decoration: none;
+      transition: gap 0.3s;
+    }
+
+    .service-card:hover .learn-more { gap: 0.6rem; }
+
+    /* ==================== ABOUT ==================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 3.5rem;
+    }
+
+    .about-image {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: var(--navy-light);
+      border: 1px solid var(--border);
+    }
+
+    .about-image-inner {
+      width: 100%; height: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 3px;
+      padding: 3px;
+    }
+
+    .about-block {
+      background: var(--navy-lighter);
+      border-radius: 4px;
+      transition: background 0.4s;
+    }
+
+    .about-block:hover { background: var(--pink-glow); }
+    .about-block.accent-block { background: var(--pink); opacity: 0.7; }
+    .about-block.span-2 { grid-column: span 2; }
+
+    .about-text h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .about-text p {
+      color: var(--gray-mid);
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .about-values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+
+    .about-value {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .about-value-icon {
+      width: 28px; height: 28px; min-width: 28px;
+      background: var(--pink-glow);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--pink);
+      margin-top: 2px;
+    }
+
+    .about-value span {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* ==================== PROCESS ==================== */
+    .process { background: var(--navy-light); }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3.5rem;
+      position: relative;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 12.5%; right: 12.5%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), var(--pink-deep), var(--border));
+    }
+
+    .process-step { text-align: center; position: relative; }
+
+    .step-number {
+      width: 56px; height: 56px;
+      margin: 0 auto 1.5rem;
+      background: var(--navy);
+      border: 2px solid var(--border-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--pink);
+      position: relative;
+      z-index: 2;
+      transition: border-color 0.4s, box-shadow 0.4s;
+    }
+
+    .process-step:hover .step-number {
+      border-color: var(--pink);
+      box-shadow: 0 0 30px rgba(234, 32, 136, 0.25);
+    }
+
+    .process-step h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .process-step p {
+      font-size: 0.85rem;
+      color: var(--gray-mid);
+      line-height: 1.6;
+      max-width: 240px;
+      margin: 0 auto;
+    }
+
+    /* ==================== RESULTS ==================== */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .result-card {
+      background: var(--navy-light);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2.5rem 2rem;
+      transition: transform 0.4s, box-shadow 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--pink), var(--pink-deep));
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+
+    .result-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .result-card:hover::after { transform: scaleX(1); }
+
+    .result-industry {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--pink);
+      margin-bottom: 0.75rem;
+    }
+
+    .result-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .result-card > p {
+      font-size: 0.88rem;
+      color: var(--gray-mid);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .result-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .metric .metric-value {
+      font-weight: 800;
+      font-size: 1.4rem;
+      background: linear-gradient(135deg, var(--pink), var(--pink-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .metric .metric-label {
+      font-size: 0.72rem;
+      color: var(--gray-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 0.15rem;
+    }
+
+    /* ==================== TECHNOLOGIES ==================== */
+    .technologies { background: var(--navy-light); }
+
+    .tech-categories {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+
+    .tech-category {
+      padding: 2rem;
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .tech-category h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      color: var(--pink);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .tech-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    .tech-tag {
+      padding: 0.4rem 0.9rem;
+      background: var(--navy-light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--gray-mid);
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .tech-tag:hover {
+      border-color: rgba(234, 32, 136, 0.3);
+      color: var(--white);
+    }
+
+    /* ==================== TESTIMONIALS ==================== */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .testimonial-card {
+      background: var(--navy-light);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s;
+    }
+
+    .testimonial-card:hover { transform: translateY(-3px); }
+
+    .testimonial-stars {
+      display: flex;
+      gap: 0.2rem;
+      margin-bottom: 1.25rem;
+      color: var(--pink);
+      font-size: 0.9rem;
+    }
+
+    .testimonial-card blockquote {
+      font-size: 0.95rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+      font-style: italic;
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .testimonial-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--pink-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: var(--pink);
+    }
+
+    .testimonial-author .name { font-weight: 600; font-size: 0.9rem; }
+    .testimonial-author .role { font-size: 0.78rem; color: var(--gray-dim); }
+
+    /* ==================== CONTACT ==================== */
+    .contact { background: var(--navy-light); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      margin-top: 3.5rem;
+    }
+
+    .contact-info h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .contact-info > p {
+      color: var(--gray-mid);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-methods { display: flex; flex-direction: column; gap: 1.25rem; }
+    .contact-method { display: flex; align-items: center; gap: 1rem; }
+
+    .contact-method-icon {
+      width: 44px; height: 44px; min-width: 44px;
+      background: var(--pink-glow);
+      border: 1px solid rgba(234, 32, 136, 0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .contact-method .contact-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gray-dim);
+      margin-bottom: 0.15rem;
+    }
+
+    .contact-method .contact-value { font-weight: 500; font-size: 0.95rem; }
+
+    .contact-form {
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group { margin-bottom: 1.25rem; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gray-mid);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: var(--navy-light);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--white);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(234, 32, 136, 0.12);
+    }
+
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    .form-group select {
+      appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%237878a0' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+
+    .contact-form .btn-primary {
+      width: 100%;
+      justify-content: center;
+      padding: 1rem;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ==================== FOOTER ==================== */
+    footer {
+      background: var(--navy);
+      border-top: 1px solid var(--border);
+      padding: 4rem 3rem 2rem;
+    }
+
+    .footer-inner { max-width: 1400px; margin: 0 auto; }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .footer-brand .nav-logo { margin-bottom: 1rem; }
+
+    .footer-brand p {
+      font-size: 0.88rem;
+      color: var(--gray-mid);
+      line-height: 1.65;
+      max-width: 300px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+
+    .footer-col a {
+      color: var(--gray-mid);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.3s;
+    }
+
+    .footer-col a:hover { color: var(--pink); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+    }
+
+    .footer-bottom p { font-size: 0.8rem; color: var(--gray-dim); }
+
+    .footer-socials { display: flex; gap: 0.75rem; }
+
+    .footer-social {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-mid);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .footer-social:hover { border-color: var(--pink); color: var(--pink); }
+
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 1100px) {
+      .hero-content { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-visual { max-width: 600px; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .process-steps { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
+      .process-steps::before { display: none; }
+      .results-grid { grid-template-columns: repeat(2, 1fr); }
+      .tech-categories { grid-template-columns: repeat(2, 1fr); }
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; }
+
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+        background: var(--navy);
+        border-bottom: 1px solid var(--border);
+        padding: 1.5rem;
+        gap: 1.25rem;
+      }
+
+      section { padding: 4rem 1.5rem; }
+      .hero { padding: 7rem 1.5rem 3rem; min-height: auto; }
+      .hero h1 { font-size: 2.4rem; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+      .hero-stat .number { font-size: 1.2rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .results-grid { grid-template-columns: 1fr; }
+      .tech-categories { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { padding: 3rem 1.5rem 1.5rem; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 2rem; }
+      .hero-stats { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .about-values { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Inline SVG logo definition -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="soshin-logo" viewBox="0 0 60 80" fill="none">
+      <path d="M30 8 C30 8, 30 20, 20 30 C10 40, 20 45, 20 45 L20 50 C20 50, 10 55, 20 65 C25 70, 30 72, 30 72" stroke="currentColor" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <circle cx="30" cy="8" r="6.5" stroke="currentColor" stroke-width="3.5" fill="none"/>
+      <circle cx="20" cy="45" r="6.5" stroke="currentColor" stroke-width="3.5" fill="none"/>
+      <circle cx="30" cy="72" r="6.5" stroke="currentColor" stroke-width="3.5" fill="none"/>
+    </symbol>
+  </svg>
+
+  <!-- ==================== NAVIGATION ==================== -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">
+      <img src="logo.png" alt="Soshin" style="height:120px;margin:-40px -20px;">
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#tech">Technologies</a></li>
+      <li><a href="#contact" class="nav-cta">Get Started</a></li>
+    </ul>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero" id="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <span class="pulse"></span>
+          Now Accepting New Projects
+        </div>
+        <h1>
+          We Build the Future.<br>
+          We <span class="accent">Revamp</span> the Past.
+        </h1>
+        <p class="hero-description">
+          Soshin transforms aging software into modern, scalable systems &mdash; and builds new solutions from the ground up. We turn technical debt into competitive advantage.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary">Start Your Project &#8594;</a>
+          <a href="#process" class="btn-secondary">How We Work</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="code-window">
+          <div class="code-window-header">
+            <span class="code-dot red"></span>
+            <span class="code-dot yellow"></span>
+            <span class="code-dot green"></span>
+            <span class="code-window-title">modernize.ts</span>
+          </div>
+          <div class="code-body">
+            <span class="comment">// Legacy &#8594; Modern. Seamless migration.</span><br>
+            <span class="keyword">import</span> { <span class="accent">modernize</span> } <span class="keyword">from</span> <span class="string">'@soshin/core'</span>;<br><br>
+            <span class="keyword">const</span> <span class="function">result</span> = <span class="keyword">await</span> <span class="accent">modernize</span>({<br>
+            &nbsp;&nbsp;legacy: <span class="string">'monolith-v2.3'</span>,<br>
+            &nbsp;&nbsp;target: <span class="string">'microservices'</span>,<br>
+            &nbsp;&nbsp;cloud: <span class="string">'multi-provider'</span>,<br>
+            &nbsp;&nbsp;testing: <span class="accent">true</span>,<br>
+            &nbsp;&nbsp;zeroDowntime: <span class="accent">true</span>,<br>
+            });<br><br>
+            <span class="comment">// &#10003; 99.9% uptime during migration</span><br>
+            <span class="comment">// &#10003; 12x performance improvement</span><br>
+            <span class="comment">// &#10003; Full backward compatibility</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-stats" style="max-width:1400px; margin-left:auto; margin-right:auto;">
+      <div class="hero-stat">
+        <div class="number" data-target="150" data-suffix="+">0</div>
+        <div class="label">Projects Delivered</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number" data-target="99.9" data-suffix="%" data-decimals="1">0</div>
+        <div class="label">Uptime Guarantee</div>
+      </div>
+      <div class="hero-stat">
+        <div class="number" data-target="40" data-suffix="+">0</div>
+        <div class="label">Enterprise Clients</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- ==================== SERVICES ==================== -->
+  <section class="services" id="services">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">What We Do</div>
+        <div class="section-title">Engineering Excellence,<br>End to End</div>
+        <p class="section-subtitle">From legacy rescue missions to greenfield builds, we deliver software that performs, scales, and lasts.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-icon">&lt;/&gt;</div>
+          <h3>Custom Software Development</h3>
+          <p>Bespoke applications built for your exact requirements. We architect, design, and ship production-grade software using modern stacks.</p>
+          <a href="#contact" class="learn-more">Learn more &#8594;</a>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-icon">&#x21bb;</div>
+          <h3>Legacy Modernization</h3>
+          <p>Breathe new life into aging systems. We refactor, re-architect, and migrate legacy codebases to modern platforms with zero downtime.</p>
+          <a href="#contact" class="learn-more">Learn more &#8594;</a>
+        </div>
+        <div class="service-card reveal reveal-delay-3">
+          <div class="service-icon">&#9729;</div>
+          <h3>Cloud Migration</h3>
+          <p>Seamless transitions to cloud-native architectures. AWS, Azure, GCP &mdash; we plan, execute, and optimize your cloud journey.</p>
+          <a href="#contact" class="learn-more">Learn more &#8594;</a>
+        </div>
+        <div class="service-card reveal reveal-delay-4">
+          <div class="service-icon">&#x2194;</div>
+          <h3>API &amp; Integration</h3>
+          <p>Connect your systems with robust APIs and seamless integrations. RESTful, GraphQL, event-driven &mdash; we unify your tech ecosystem.</p>
+          <a href="#contact" class="learn-more">Learn more &#8594;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- ==================== ABOUT ==================== -->
+  <section class="about" id="about">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">About Soshin</div>
+        <div class="section-title">Built by Engineers<br>Who Ship</div>
+      </div>
+      <div class="about-grid">
+        <div class="about-image reveal">
+          <div class="about-image-inner">
+            <div class="about-block span-2"></div>
+            <div class="about-block"></div>
+            <div class="about-block accent-block"></div>
+            <div class="about-block"></div>
+            <div class="about-block accent-block span-2"></div>
+            <div class="about-block"></div>
+            <div class="about-block"></div>
+            <div class="about-block span-2"></div>
+            <div class="about-block accent-block"></div>
+          </div>
+        </div>
+        <div class="about-text reveal">
+          <h3>We believe great software is a craft, not a commodity.</h3>
+          <p>Soshin was founded by senior engineers who spent decades inside enterprises &mdash; watching critical systems rot under layers of patches and workarounds. We built this company to fix that.</p>
+          <p>Our team combines deep expertise in legacy systems with cutting-edge knowledge of modern architectures. The result: transformations that are surgical, safe, and dramatically effective.</p>
+          <div class="about-values">
+            <div class="about-value">
+              <div class="about-value-icon">&#10003;</div>
+              <span>Zero-Downtime Migrations</span>
+            </div>
+            <div class="about-value">
+              <div class="about-value-icon">&#10003;</div>
+              <span>Full Test Coverage</span>
+            </div>
+            <div class="about-value">
+              <div class="about-value-icon">&#10003;</div>
+              <span>Transparent Process</span>
+            </div>
+            <div class="about-value">
+              <div class="about-value-icon">&#10003;</div>
+              <span>Long-term Partnership</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- ==================== PROCESS ==================== -->
+  <section class="process" id="process">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">How We Work</div>
+        <div class="section-title">From Audit to Launch<br>in Four Phases</div>
+        <p class="section-subtitle">A battle-tested process designed for complex modernizations and new builds alike.</p>
+      </div>
+      <div class="process-steps">
+        <div class="process-step reveal reveal-delay-1">
+          <div class="step-number">01</div>
+          <h3>Discovery &amp; Audit</h3>
+          <p>Deep-dive into your existing systems, codebase, and infrastructure. We map dependencies, risks, and opportunities.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-2">
+          <div class="step-number">02</div>
+          <h3>Strategy &amp; Architecture</h3>
+          <p>We design a migration roadmap or solution architecture tailored to your constraints, timeline, and business goals.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-3">
+          <div class="step-number">03</div>
+          <h3>Iterative Delivery</h3>
+          <p>Agile sprints with continuous deployment. You see progress weekly, with full visibility into every decision we make.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-4">
+          <div class="step-number">04</div>
+          <h3>Launch &amp; Support</h3>
+          <p>Production launch with monitoring, documentation, and knowledge transfer. We stay on for post-launch optimization.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- ==================== RESULTS ==================== -->
+  <section class="results" id="results">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">Proven Results</div>
+        <div class="section-title">Transformations<br>That Speak for Themselves</div>
+      </div>
+      <div class="results-grid">
+        <div class="result-card reveal reveal-delay-1">
+          <div class="result-industry">Financial Services</div>
+          <h3>Core Banking System Modernization</h3>
+          <p>Migrated a 15-year-old monolithic banking platform to a microservices architecture on Kubernetes, with zero customer-facing downtime.</p>
+          <div class="result-metrics">
+            <div class="metric">
+              <div class="metric-value">12x</div>
+              <div class="metric-label">Faster Processing</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">68%</div>
+              <div class="metric-label">Cost Reduction</div>
+            </div>
+          </div>
+        </div>
+        <div class="result-card reveal reveal-delay-2">
+          <div class="result-industry">Healthcare</div>
+          <h3>EHR Platform Overhaul</h3>
+          <p>Re-engineered a legacy electronic health records system to meet modern compliance standards with a cloud-native architecture.</p>
+          <div class="result-metrics">
+            <div class="metric">
+              <div class="metric-value">99.99%</div>
+              <div class="metric-label">Uptime Achieved</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">3mo</div>
+              <div class="metric-label">Delivery Time</div>
+            </div>
+          </div>
+        </div>
+        <div class="result-card reveal reveal-delay-3">
+          <div class="result-industry">E-Commerce</div>
+          <h3>Scalable Commerce Engine</h3>
+          <p>Built a high-performance commerce platform from scratch, handling Black Friday traffic spikes without breaking a sweat.</p>
+          <div class="result-metrics">
+            <div class="metric">
+              <div class="metric-value">50K</div>
+              <div class="metric-label">Requests/Second</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">4.2s</div>
+              <div class="metric-label">Avg. Load Time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- ==================== TECHNOLOGIES ==================== -->
+  <section class="technologies" id="tech">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">Our Stack</div>
+        <div class="section-title">Technology-Agnostic,<br>Results-Obsessed</div>
+        <p class="section-subtitle">We pick the right tool for the job &mdash; not the trendy one. Here's what we work with daily.</p>
+      </div>
+      <div class="tech-categories">
+        <div class="tech-category reveal reveal-delay-1">
+          <h3>Languages &amp; Frameworks</h3>
+          <div class="tech-list">
+            <span class="tech-tag">TypeScript</span>
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">Go</span>
+            <span class="tech-tag">Rust</span>
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">C#/.NET</span>
+            <span class="tech-tag">React</span>
+            <span class="tech-tag">Next.js</span>
+            <span class="tech-tag">Node.js</span>
+            <span class="tech-tag">Django</span>
+            <span class="tech-tag">Spring Boot</span>
+          </div>
+        </div>
+        <div class="tech-category reveal reveal-delay-2">
+          <h3>Cloud &amp; Infrastructure</h3>
+          <div class="tech-list">
+            <span class="tech-tag">AWS</span>
+            <span class="tech-tag">Azure</span>
+            <span class="tech-tag">GCP</span>
+            <span class="tech-tag">Kubernetes</span>
+            <span class="tech-tag">Docker</span>
+            <span class="tech-tag">Terraform</span>
+            <span class="tech-tag">Serverless</span>
+            <span class="tech-tag">CI/CD Pipelines</span>
+            <span class="tech-tag">Nginx</span>
+          </div>
+        </div>
+        <div class="tech-category reveal reveal-delay-3">
+          <h3>Data &amp; Messaging</h3>
+          <div class="tech-list">
+            <span class="tech-tag">PostgreSQL</span>
+            <span class="tech-tag">MongoDB</span>
+            <span class="tech-tag">Redis</span>
+            <span class="tech-tag">Kafka</span>
+            <span class="tech-tag">RabbitMQ</span>
+            <span class="tech-tag">Elasticsearch</span>
+            <span class="tech-tag">GraphQL</span>
+            <span class="tech-tag">gRPC</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- ==================== TESTIMONIALS ==================== -->
+  <section class="testimonials" id="testimonials">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">Client Voices</div>
+        <div class="section-title">Trusted by Teams<br>That Don't Settle</div>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal reveal-delay-1">
+          <div class="testimonial-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div>
+          <blockquote>"Soshin took our 10-year-old COBOL system and turned it into a modern cloud-native platform in under 6 months. The migration was flawless."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">MR</div>
+            <div>
+              <div class="name">Maria Reyes</div>
+              <div class="role">CTO, FinServ Global</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal reveal-delay-2">
+          <div class="testimonial-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div>
+          <blockquote>"They don't just write code &mdash; they think architecturally. Our platform now handles 10x the load at a fraction of the infrastructure cost."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">DK</div>
+            <div>
+              <div class="name">David Kim</div>
+              <div class="role">VP Engineering, HealthBridge</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal reveal-delay-3">
+          <div class="testimonial-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div>
+          <blockquote>"The most professional dev team we've ever worked with. Transparent, fast, and they actually care about the long-term health of our systems."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">SL</div>
+            <div>
+              <div class="name">Sarah Lin</div>
+              <div class="role">CEO, NovaTrade</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- ==================== CONTACT ==================== -->
+  <section class="contact" id="contact">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">Get In Touch</div>
+        <div class="section-title">Let's Build<br>Something Great</div>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <h3>Ready to modernize?</h3>
+          <p>Whether you need a legacy rescue, a new build, or a cloud migration, we'd love to hear about your project. Reach out and we'll respond within 24 hours.</p>
+          <div class="contact-methods">
+            <div class="contact-method">
+              <div class="contact-method-icon">&#9993;</div>
+              <div>
+                <div class="contact-label">Email</div>
+                <div class="contact-value">hello@soshin.ai</div>
+              </div>
+            </div>
+            <div class="contact-method">
+              <div class="contact-method-icon">&#9742;</div>
+              <div>
+                <div class="contact-label">Phone</div>
+                <div class="contact-value">+1 (416) 887-5555</div>
+              </div>
+            </div>
+            <div class="contact-method">
+              <div class="contact-method-icon">&#9906;</div>
+              <div>
+                <div class="contact-label">Location</div>
+                <div class="contact-value">Toronto, ON, Canada</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form reveal" id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="john@company.com" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="company">Company</label>
+              <input type="text" id="company" placeholder="Acme Corp">
+            </div>
+            <div class="form-group">
+              <label for="service">Service Needed</label>
+              <select id="service">
+                <option value="">Select a service</option>
+                <option>Custom Software Development</option>
+                <option>Legacy Modernization</option>
+                <option>Cloud Migration</option>
+                <option>API &amp; Integration</option>
+                <option>Consulting &amp; Audit</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="message">Project Details</label>
+            <textarea id="message" placeholder="Tell us about your project, timeline, and goals..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary" id="submitBtn">Send Message &#8594;</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <img src="logo.png" alt="Soshin" style="height:110px;margin:-38px -18px;">
+          </a>
+          <p>Transforming legacy software into modern, scalable systems. Built by engineers, for engineers.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#services">Custom Development</a></li>
+            <li><a href="#services">Legacy Modernization</a></li>
+            <li><a href="#services">Cloud Migration</a></li>
+            <li><a href="#services">API Integration</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#results">Case Studies</a></li>
+            <li><a href="#process">Our Process</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Open Source</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Soshin. All rights reserved. &mdash; soshin.ai</p>
+        <div class="footer-socials">
+          <a href="#" class="footer-social" aria-label="GitHub">GH</a>
+          <a href="#" class="footer-social" aria-label="LinkedIn">LI</a>
+          <a href="#" class="footer-social" aria-label="Twitter">X</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function() {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Mobile menu
+    var mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    var navLinks = document.getElementById('navLinks');
+    mobileMenuBtn.addEventListener('click', function() {
+      navLinks.classList.toggle('open');
+    });
+
+    var navLinkItems = navLinks.querySelectorAll('a');
+    for (var i = 0; i < navLinkItems.length; i++) {
+      navLinkItems[i].addEventListener('click', function() {
+        navLinks.classList.remove('open');
+      });
+    }
+
+    // Scroll reveal
+    var revealElements = document.querySelectorAll('.reveal');
+    var observer = new IntersectionObserver(function(entries) {
+      for (var j = 0; j < entries.length; j++) {
+        if (entries[j].isIntersecting) {
+          entries[j].target.classList.add('visible');
+        }
+      }
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    for (var k = 0; k < revealElements.length; k++) {
+      observer.observe(revealElements[k]);
+    }
+
+    // Form
+    var contactForm = document.getElementById('contactForm');
+    var submitBtn = document.getElementById('submitBtn');
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      submitBtn.textContent = 'Message Sent! \u2713';
+      submitBtn.style.background = '#22c55e';
+      setTimeout(function() {
+        submitBtn.textContent = 'Send Message \u2192';
+        submitBtn.style.background = '';
+        contactForm.reset();
+      }, 3000);
+    });
+
+    // Counter animation
+    function animateCounters() {
+      var stats = document.querySelectorAll('.hero-stat .number');
+      for (var m = 0; m < stats.length; m++) {
+        (function(stat) {
+          var target = parseFloat(stat.getAttribute('data-target'));
+          var suffix = stat.getAttribute('data-suffix') || '';
+          var decimals = parseInt(stat.getAttribute('data-decimals') || '0', 10);
+          var duration = 2000;
+          var start = performance.now();
+
+          function update(now) {
+            var elapsed = now - start;
+            var progress = Math.min(elapsed / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var current = target * eased;
+
+            if (decimals > 0) {
+              stat.textContent = current.toFixed(decimals) + suffix;
+            } else {
+              stat.textContent = Math.round(current) + suffix;
+            }
+
+            if (progress < 1) requestAnimationFrame(update);
+          }
+          requestAnimationFrame(update);
+        })(stats[m]);
+      }
+    }
+
+    var heroStats = document.querySelector('.hero-stats');
+    if (heroStats) {
+      var statsObserver = new IntersectionObserver(function(entries) {
+        for (var n = 0; n < entries.length; n++) {
+          if (entries[n].isIntersecting) {
+            animateCounters();
+            statsObserver.disconnect();
+          }
+        }
+      }, { threshold: 0.5 });
+      statsObserver.observe(heroStats);
+    }
+  </script>
+</body>
+</html>
