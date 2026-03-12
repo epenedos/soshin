@@ -600,7 +600,7 @@
     .process-step { text-align: center; position: relative; }
 
     .step-number {
-      width: 56px; height: 56px;
+      width: 60px; height: 60px;
       margin: 0 auto 1.5rem;
       background: var(--navy);
       border: 2px solid var(--border-light);
@@ -608,12 +608,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: var(--pink);
       position: relative;
       z-index: 2;
       transition: border-color 0.4s, box-shadow 0.4s;
+    }
+
+    .step-number svg {
+      width: 26px; height: 26px;
+      stroke: var(--pink);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .process-step:hover .step-number {
@@ -722,7 +728,7 @@
 
     .tech-categories {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 2rem;
       margin-top: 3.5rem;
     }
@@ -761,65 +767,134 @@
       color: var(--white);
     }
 
-    /* ==================== TESTIMONIALS ==================== */
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 3.5rem;
-    }
-
-    .testimonial-card {
-      background: var(--navy-light);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 2.5rem 2rem;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s;
-    }
-
-    .testimonial-card:hover { transform: translateY(-3px); }
-
-    .testimonial-stars {
-      display: flex;
-      gap: 0.2rem;
-      margin-bottom: 1.25rem;
-      color: var(--pink);
-      font-size: 0.9rem;
-    }
-
-    .testimonial-card blockquote {
-      font-size: 0.95rem;
-      color: var(--gray-mid);
-      line-height: 1.7;
-      font-style: italic;
-      flex: 1;
-      margin-bottom: 1.5rem;
-    }
-
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .testimonial-avatar {
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background: var(--pink-glow);
+    /* ==================== SERVICE MODAL ==================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(5, 5, 20, 0.85);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 0.8rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+      padding: 1.5rem;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--navy-light);
+      border: 1px solid var(--border-light);
+      border-radius: 18px;
+      padding: 2.5rem;
+      max-width: 560px;
+      width: 100%;
+      position: relative;
+      transform: translateY(20px) scale(0.97);
+      transition: transform 0.35s ease;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem; right: 1.25rem;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 36px; height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--gray-mid);
+      font-size: 1.1rem;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .modal-close:hover {
+      border-color: var(--pink);
       color: var(--pink);
     }
 
-    .testimonial-author .name { font-weight: 600; font-size: 0.9rem; }
-    .testimonial-author .role { font-size: 0.78rem; color: var(--gray-dim); }
+    .modal-icon {
+      width: 56px; height: 56px;
+      background: var(--pink-glow);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .modal-content h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .modal-content p {
+      font-size: 0.95rem;
+      color: var(--gray-mid);
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+
+    .modal-features {
+      list-style: none;
+      padding: 0;
+      margin: 1.25rem 0 1.5rem;
+    }
+
+    .modal-features li {
+      font-size: 0.9rem;
+      color: var(--gray-mid);
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .modal-features li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px; height: 8px;
+      background: var(--pink);
+      border-radius: 50%;
+    }
+
+    .modal-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      background: var(--pink);
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+      margin-top: 0.5rem;
+    }
+
+    .modal-cta:hover {
+      background: var(--pink-deep);
+      transform: translateY(-1px);
+    }
 
     /* ==================== CONTACT ==================== */
     .contact { background: var(--navy-light); }
@@ -1042,7 +1117,6 @@
       .process-steps::before { display: none; }
       .results-grid { grid-template-columns: repeat(2, 1fr); }
       .tech-categories { grid-template-columns: repeat(2, 1fr); }
-      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-top { grid-template-columns: 1fr 1fr; }
     }
 
@@ -1074,7 +1148,6 @@
       .process-steps { grid-template-columns: 1fr 1fr; }
       .results-grid { grid-template-columns: 1fr; }
       .tech-categories { grid-template-columns: 1fr; }
-      .testimonials-grid { grid-template-columns: 1fr; }
       .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .form-row { grid-template-columns: 1fr; }
       footer { padding: 3rem 1.5rem 1.5rem; }
@@ -1195,29 +1268,29 @@
         <p class="section-subtitle">From legacy rescue missions to greenfield builds, we deliver software that performs, scales, and lasts.</p>
       </div>
       <div class="services-grid">
-        <div class="service-card reveal reveal-delay-1">
+        <div class="service-card reveal reveal-delay-1" data-service="custom">
           <div class="service-icon">&lt;/&gt;</div>
           <h3>Custom Software Development</h3>
           <p>Bespoke applications built for your exact requirements. We architect, design, and ship production-grade software using modern stacks.</p>
-          <a href="#contact" class="learn-more">Learn more &#8594;</a>
+          <a href="javascript:void(0)" class="learn-more" onclick="openServiceModal('custom')">Learn more &#8594;</a>
         </div>
-        <div class="service-card reveal reveal-delay-2">
+        <div class="service-card reveal reveal-delay-2" data-service="legacy">
           <div class="service-icon">&#x21bb;</div>
           <h3>Legacy Modernization</h3>
           <p>Breathe new life into aging systems. We refactor, re-architect, and migrate legacy codebases to modern platforms with zero downtime.</p>
-          <a href="#contact" class="learn-more">Learn more &#8594;</a>
+          <a href="javascript:void(0)" class="learn-more" onclick="openServiceModal('legacy')">Learn more &#8594;</a>
         </div>
-        <div class="service-card reveal reveal-delay-3">
+        <div class="service-card reveal reveal-delay-3" data-service="cloud">
           <div class="service-icon">&#9729;</div>
           <h3>Cloud Migration</h3>
           <p>Seamless transitions to cloud-native architectures. AWS, Azure, GCP &mdash; we plan, execute, and optimize your cloud journey.</p>
-          <a href="#contact" class="learn-more">Learn more &#8594;</a>
+          <a href="javascript:void(0)" class="learn-more" onclick="openServiceModal('cloud')">Learn more &#8594;</a>
         </div>
-        <div class="service-card reveal reveal-delay-4">
+        <div class="service-card reveal reveal-delay-4" data-service="api">
           <div class="service-icon">&#x2194;</div>
           <h3>API &amp; Integration</h3>
           <p>Connect your systems with robust APIs and seamless integrations. RESTful, GraphQL, event-driven &mdash; we unify your tech ecosystem.</p>
-          <a href="#contact" class="learn-more">Learn more &#8594;</a>
+          <a href="javascript:void(0)" class="learn-more" onclick="openServiceModal('api')">Learn more &#8594;</a>
         </div>
       </div>
     </div>
@@ -1285,22 +1358,30 @@
       </div>
       <div class="process-steps">
         <div class="process-step reveal reveal-delay-1">
-          <div class="step-number">01</div>
+          <div class="step-number">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
           <h3>Discovery &amp; Audit</h3>
           <p>Deep-dive into your existing systems, codebase, and infrastructure. We map dependencies, risks, and opportunities.</p>
         </div>
         <div class="process-step reveal reveal-delay-2">
-          <div class="step-number">02</div>
+          <div class="step-number">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          </div>
           <h3>Strategy &amp; Architecture</h3>
           <p>We design a migration roadmap or solution architecture tailored to your constraints, timeline, and business goals.</p>
         </div>
         <div class="process-step reveal reveal-delay-3">
-          <div class="step-number">03</div>
+          <div class="step-number">
+            <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </div>
           <h3>Iterative Delivery</h3>
           <p>Agile sprints with continuous deployment. You see progress weekly, with full visibility into every decision we make.</p>
         </div>
         <div class="process-step reveal reveal-delay-4">
-          <div class="step-number">04</div>
+          <div class="step-number">
+            <svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+          </div>
           <h3>Launch &amp; Support</h3>
           <p>Production launch with monitoring, documentation, and knowledge transfer. We stay on for post-launch optimization.</p>
         </div>
@@ -1387,6 +1468,8 @@
             <span class="tech-tag">Rust</span>
             <span class="tech-tag">Java</span>
             <span class="tech-tag">C#/.NET</span>
+            <span class="tech-tag">COBOL</span>
+            <span class="tech-tag">RPG</span>
             <span class="tech-tag">React</span>
             <span class="tech-tag">Next.js</span>
             <span class="tech-tag">Node.js</span>
@@ -1421,51 +1504,15 @@
             <span class="tech-tag">gRPC</span>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider-line"></div>
-
-  <!-- ==================== TESTIMONIALS ==================== -->
-  <section class="testimonials" id="testimonials">
-    <div class="section-inner">
-      <div class="reveal">
-        <div class="section-label">Client Voices</div>
-        <div class="section-title">Trusted by Teams<br>That Don't Settle</div>
-      </div>
-      <div class="testimonials-grid">
-        <div class="testimonial-card reveal reveal-delay-1">
-          <div class="testimonial-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div>
-          <blockquote>"Soshin took our 10-year-old COBOL system and turned it into a modern cloud-native platform in under 6 months. The migration was flawless."</blockquote>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">MR</div>
-            <div>
-              <div class="name">Maria Reyes</div>
-              <div class="role">CTO, FinServ Global</div>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card reveal reveal-delay-2">
-          <div class="testimonial-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div>
-          <blockquote>"They don't just write code &mdash; they think architecturally. Our platform now handles 10x the load at a fraction of the infrastructure cost."</blockquote>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">DK</div>
-            <div>
-              <div class="name">David Kim</div>
-              <div class="role">VP Engineering, HealthBridge</div>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card reveal reveal-delay-3">
-          <div class="testimonial-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div>
-          <blockquote>"The most professional dev team we've ever worked with. Transparent, fast, and they actually care about the long-term health of our systems."</blockquote>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">SL</div>
-            <div>
-              <div class="name">Sarah Lin</div>
-              <div class="role">CEO, NovaTrade</div>
-            </div>
+        <div class="tech-category reveal reveal-delay-4">
+          <h3>Legacy &amp; Enterprise</h3>
+          <div class="tech-list">
+            <span class="tech-tag">AS400</span>
+            <span class="tech-tag">Mainframe</span>
+            <span class="tech-tag">IBM i</span>
+            <span class="tech-tag">z/OS</span>
+            <span class="tech-tag">DB2</span>
+            <span class="tech-tag">CICS</span>
           </div>
         </div>
       </div>
@@ -1473,6 +1520,18 @@
   </section>
 
   <div class="divider-line"></div>
+
+  <!-- ==================== SERVICE MODAL ==================== -->
+  <div class="modal-overlay" id="serviceModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div class="modal-icon" id="modalIcon"></div>
+      <h2 id="modalTitle"></h2>
+      <p id="modalDesc"></p>
+      <ul class="modal-features" id="modalFeatures"></ul>
+      <a href="#contact" class="modal-cta" id="modalCta">Get Started &#8594;</a>
+    </div>
+  </div>
 
   <!-- ==================== CONTACT ==================== -->
   <section class="contact" id="contact">
@@ -1687,6 +1746,91 @@
       }, { threshold: 0.5 });
       statsObserver.observe(heroStats);
     }
+
+    // Service Modal
+    var serviceData = {
+      custom: {
+        icon: '</> ',
+        title: 'Custom Software Development',
+        desc: 'We build tailor-made software solutions from the ground up. Our team works closely with your stakeholders to understand your unique business processes, then architects and delivers production-grade applications that fit like a glove.',
+        features: [
+          'Full-stack development with modern frameworks and languages',
+          'Scalable microservices and monolith architectures',
+          'UI/UX design integrated into the development workflow',
+          'Automated testing, CI/CD pipelines, and DevOps best practices',
+          'Ongoing maintenance and feature iteration post-launch'
+        ]
+      },
+      legacy: {
+        icon: '\u21BB',
+        title: 'Legacy Modernization',
+        desc: 'We specialize in transforming aging systems into modern, maintainable platforms. Whether you are running COBOL on mainframes, RPG on AS400, or outdated Java monoliths, we create a migration path that minimizes risk and maximizes business continuity.',
+        features: [
+          'Comprehensive codebase and infrastructure audits',
+          'Incremental migration strategies with zero-downtime transitions',
+          'AS400, Mainframe, COBOL, and RPG to modern stack conversions',
+          'Data migration and integrity validation',
+          'Staff training and knowledge transfer throughout the process'
+        ]
+      },
+      cloud: {
+        icon: '\u2601',
+        title: 'Cloud Migration',
+        desc: 'We plan and execute seamless transitions to cloud-native architectures. Whether you are moving from on-premise to AWS, Azure, or GCP, we optimize every step for cost, performance, and security.',
+        features: [
+          'Cloud readiness assessments and TCO analysis',
+          'Multi-cloud and hybrid cloud architecture design',
+          'Containerization with Docker and Kubernetes orchestration',
+          'Infrastructure as Code with Terraform and CloudFormation',
+          'Performance monitoring, cost optimization, and security hardening'
+        ]
+      },
+      api: {
+        icon: '\u2194',
+        title: 'API & Integration',
+        desc: 'We connect your disparate systems into a unified, efficient ecosystem. From internal microservices to third-party platforms, we design robust APIs and integration layers that keep your data flowing reliably.',
+        features: [
+          'RESTful and GraphQL API design and development',
+          'Event-driven architectures with Kafka and RabbitMQ',
+          'Third-party service integrations (payment, CRM, ERP, etc.)',
+          'API gateway setup, rate limiting, and security',
+          'Comprehensive API documentation and developer portals'
+        ]
+      }
+    };
+
+    var modalOverlay = document.getElementById('serviceModal');
+    var modalClose = document.getElementById('modalClose');
+
+    function openServiceModal(key) {
+      var data = serviceData[key];
+      if (!data) return;
+      document.getElementById('modalIcon').textContent = data.icon;
+      document.getElementById('modalTitle').textContent = data.title;
+      document.getElementById('modalDesc').textContent = data.desc;
+      var featuresList = document.getElementById('modalFeatures');
+      while (featuresList.firstChild) featuresList.removeChild(featuresList.firstChild);
+      for (var i = 0; i < data.features.length; i++) {
+        var li = document.createElement('li');
+        li.textContent = data.features[i];
+        featuresList.appendChild(li);
+      }
+      modalOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeServiceModal() {
+      modalOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    modalClose.addEventListener('click', closeServiceModal);
+    modalOverlay.addEventListener('click', function(e) {
+      if (e.target === modalOverlay) closeServiceModal();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeServiceModal();
+    });
   </script>
 </body>
 </html>
