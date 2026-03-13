@@ -905,6 +905,15 @@
       margin-top: 0.5rem;
     }
 
+    .captcha-group { max-width: 280px; }
+    .captcha-group input { width: 100%; }
+    .captcha-error {
+      display: none;
+      color: #ef4444;
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
     /* ==================== FOOTER ==================== */
     footer {
       background: var(--navy);
@@ -1384,21 +1393,14 @@
               <div class="contact-method-icon">&#9993;</div>
               <div>
                 <div class="contact-label">Email</div>
-                <div class="contact-value">hello@soshin.ai</div>
-              </div>
-            </div>
-            <div class="contact-method">
-              <div class="contact-method-icon">&#9742;</div>
-              <div>
-                <div class="contact-label">Phone</div>
-                <div class="contact-value">+1 (416) 887-5555</div>
+                <div class="contact-value">info@soshin.ai</div>
               </div>
             </div>
             <div class="contact-method">
               <div class="contact-method-icon">&#9906;</div>
               <div>
                 <div class="contact-label">Location</div>
-                <div class="contact-value">Toronto, ON, Canada</div>
+                <div class="contact-value">Lisbon, Portugal</div>
               </div>
             </div>
           </div>
@@ -1434,6 +1436,11 @@
           <div class="form-group">
             <label for="message">Project Details</label>
             <textarea id="message" placeholder="Tell us about your project, timeline, and goals..." required></textarea>
+          </div>
+          <div class="form-group captcha-group">
+            <label id="captchaLabel">What is 3 + 4?</label>
+            <input type="number" id="captchaAnswer" placeholder="Your answer" required>
+            <div class="captcha-error" id="captchaError">Incorrect answer. Please try again.</div>
           </div>
           <button type="submit" class="btn-primary" id="submitBtn">Send Message &#8594;</button>
         </form>
@@ -1524,17 +1531,38 @@
       observer.observe(revealElements[k]);
     }
 
+    // CAPTCHA
+    var captchaLabel = document.getElementById('captchaLabel');
+    var captchaAnswer = document.getElementById('captchaAnswer');
+    var captchaError = document.getElementById('captchaError');
+    var captchaA, captchaB;
+
+    function generateCaptcha(hideError) {
+      captchaA = Math.floor(Math.random() * 9) + 1;
+      captchaB = Math.floor(Math.random() * 9) + 1;
+      captchaLabel.textContent = 'What is ' + captchaA + ' + ' + captchaB + '?';
+      captchaAnswer.value = '';
+      if (hideError) captchaError.style.display = 'none';
+    }
+    generateCaptcha(true);
+
     // Form
     var contactForm = document.getElementById('contactForm');
     var submitBtn = document.getElementById('submitBtn');
     contactForm.addEventListener('submit', function(e) {
       e.preventDefault();
+      if (parseInt(captchaAnswer.value, 10) !== captchaA + captchaB) {
+        captchaError.style.display = 'block';
+        generateCaptcha();
+        return;
+      }
       submitBtn.textContent = 'Message Sent! \u2713';
       submitBtn.style.background = '#22c55e';
       setTimeout(function() {
         submitBtn.textContent = 'Send Message \u2192';
         submitBtn.style.background = '';
         contactForm.reset();
+        generateCaptcha(true);
       }, 3000);
     });
 
