@@ -641,88 +641,6 @@
       margin: 0 auto;
     }
 
-    /* ==================== RESULTS ==================== */
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 3.5rem;
-    }
-
-    .result-card {
-      background: var(--navy-light);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 2.5rem 2rem;
-      transition: transform 0.4s, box-shadow 0.4s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .result-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--pink), var(--pink-deep));
-      transform: scaleX(0);
-      transition: transform 0.4s;
-    }
-
-    .result-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-
-    .result-card:hover::after { transform: scaleX(1); }
-
-    .result-industry {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--pink);
-      margin-bottom: 0.75rem;
-    }
-
-    .result-card h3 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-    }
-
-    .result-card > p {
-      font-size: 0.88rem;
-      color: var(--gray-mid);
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-    }
-
-    .result-metrics {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .metric .metric-value {
-      font-weight: 800;
-      font-size: 1.4rem;
-      background: linear-gradient(135deg, var(--pink), var(--pink-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .metric .metric-label {
-      font-size: 0.72rem;
-      color: var(--gray-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-top: 0.15rem;
-    }
-
     /* ==================== TECHNOLOGIES ==================== */
     .technologies { background: var(--navy-light); }
 
@@ -1095,7 +1013,6 @@
       .services-grid { grid-template-columns: repeat(2, 1fr); }
       .process-steps { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
       .process-steps::before { display: none; }
-      .results-grid { grid-template-columns: repeat(2, 1fr); }
       .tech-categories { grid-template-columns: repeat(2, 1fr); }
       .footer-top { grid-template-columns: 1fr 1fr; }
     }
@@ -1126,7 +1043,6 @@
       .services-grid { grid-template-columns: 1fr; }
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .process-steps { grid-template-columns: 1fr 1fr; }
-      .results-grid { grid-template-columns: 1fr; }
       .tech-categories { grid-template-columns: 1fr; }
       .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .form-row { grid-template-columns: 1fr; }
@@ -1164,7 +1080,6 @@
       <li><a href="#services">Services</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#process">Process</a></li>
-      <li><a href="#results">Results</a></li>
       <li><a href="#tech">Technologies</a></li>
       <li><a href="#contact" class="nav-cta">Get Started</a></li>
     </ul>
@@ -1371,65 +1286,6 @@
 
   <div class="divider-line"></div>
 
-  <!-- ==================== RESULTS ==================== -->
-  <section class="results" id="results">
-    <div class="section-inner">
-      <div class="reveal">
-        <div class="section-label">Proven Results</div>
-        <div class="section-title">Transformations<br>That Speak for Themselves</div>
-      </div>
-      <div class="results-grid">
-        <div class="result-card reveal reveal-delay-1">
-          <div class="result-industry">Financial Services</div>
-          <h3>Core Banking System Modernization</h3>
-          <p>Migrated a 15-year-old monolithic banking platform to a microservices architecture on Kubernetes, with zero customer-facing downtime.</p>
-          <div class="result-metrics">
-            <div class="metric">
-              <div class="metric-value">12x</div>
-              <div class="metric-label">Faster Processing</div>
-            </div>
-            <div class="metric">
-              <div class="metric-value">68%</div>
-              <div class="metric-label">Cost Reduction</div>
-            </div>
-          </div>
-        </div>
-        <div class="result-card reveal reveal-delay-2">
-          <div class="result-industry">Healthcare</div>
-          <h3>EHR Platform Overhaul</h3>
-          <p>Re-engineered a legacy electronic health records system to meet modern compliance standards with a cloud-native architecture.</p>
-          <div class="result-metrics">
-            <div class="metric">
-              <div class="metric-value">99.99%</div>
-              <div class="metric-label">Uptime Achieved</div>
-            </div>
-            <div class="metric">
-              <div class="metric-value">3mo</div>
-              <div class="metric-label">Delivery Time</div>
-            </div>
-          </div>
-        </div>
-        <div class="result-card reveal reveal-delay-3">
-          <div class="result-industry">E-Commerce</div>
-          <h3>Scalable Commerce Engine</h3>
-          <p>Built a high-performance commerce platform from scratch, handling Black Friday traffic spikes without breaking a sweat.</p>
-          <div class="result-metrics">
-            <div class="metric">
-              <div class="metric-value">50K</div>
-              <div class="metric-label">Requests/Second</div>
-            </div>
-            <div class="metric">
-              <div class="metric-value">4.2s</div>
-              <div class="metric-label">Avg. Load Time</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider-line"></div>
-
   <!-- ==================== TECHNOLOGIES ==================== -->
   <section class="technologies" id="tech">
     <div class="section-inner">
@@ -1608,7 +1464,6 @@
           <h4>Company</h4>
           <ul>
             <li><a href="#about">About Us</a></li>
-            <li><a href="#results">Case Studies</a></li>
             <li><a href="#process">Our Process</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
