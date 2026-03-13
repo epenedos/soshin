@@ -1556,14 +1556,49 @@
         generateCaptcha();
         return;
       }
-      submitBtn.textContent = 'Message Sent! \u2713';
-      submitBtn.style.background = '#22c55e';
-      setTimeout(function() {
-        submitBtn.textContent = 'Send Message \u2192';
-        submitBtn.style.background = '';
-        contactForm.reset();
-        generateCaptcha(true);
-      }, 3000);
+      // Send to Formspree
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+      var formData = new FormData();
+      formData.append('name', document.getElementById('name').value);
+      formData.append('email', document.getElementById('email').value);
+      formData.append('company', document.getElementById('company').value);
+      formData.append('service', document.getElementById('service').value);
+      formData.append('message', document.getElementById('message').value);
+
+      fetch('https://formspree.io/f/xpqyrgvp', {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      }).then(function(response) {
+        if (response.ok) {
+          submitBtn.textContent = 'Message Sent! \u2713';
+          submitBtn.style.background = '#22c55e';
+          setTimeout(function() {
+            submitBtn.textContent = 'Send Message \u2192';
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+            contactForm.reset();
+            generateCaptcha(true);
+          }, 3000);
+        } else {
+          submitBtn.textContent = 'Failed to send \u2717';
+          submitBtn.style.background = '#ef4444';
+          setTimeout(function() {
+            submitBtn.textContent = 'Send Message \u2192';
+            submitBtn.style.background = '';
+            submitBtn.disabled = false;
+          }, 3000);
+        }
+      }).catch(function() {
+        submitBtn.textContent = 'Failed to send \u2717';
+        submitBtn.style.background = '#ef4444';
+        setTimeout(function() {
+          submitBtn.textContent = 'Send Message \u2192';
+          submitBtn.style.background = '';
+          submitBtn.disabled = false;
+        }, 3000);
+      });
     });
 
     // Counter animation
